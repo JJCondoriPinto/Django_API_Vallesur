@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-y4!_+n1rv+^--b6utqol7#n!-o6szt%*@m1vs1_e^s&f*osi3x
 DEBUG = True
 
 #direcciones permitidos para consultar en el servidor
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['api.django.vallesur.bjrcode.com']
 
 
 # Application definition
