@@ -1,0 +1,59 @@
+<!-- en algún archivo HTML -->
+<!-- <form id="formImagen" enctype="multipart/form-data"> -->
+
+    <!-- <input type="file" id="imagenDelanteraInput" name='imagen1'> -->
+    <!-- <input type="hidden" name="tipo" value="delantera"> -->
+
+    <!-- <input type="file" id="imagenTraseraInput" name='imagen2'> -->
+    <!-- <input type="hidden" name="tipo" value="trasera"> -->
+
+    <!-- <input type="submit" value="Enviar">
+</form> -->
+
+<form id="formImagen" enctype="multipart/form-data">
+    <label for="imageBytesInput1">Lista de bits1:</label>
+    <input type="text" id="imageBytesInput1" name="image_bytes1">
+    <label for="imageBytesInput2">Lista de bits1:</label>
+    <input type="text" id="imageBytesInput2" name="image_bytes">
+    <input type="submit" value="Enviar">
+</form>
+
+<div id="resultadoDiv"> </div>
+
+<script>
+    // document.getElementById("formImagen").onsubmit = function (event) {
+    //     event.preventDefault();
+    //     let formData = new FormData();
+    //     formData.append('imagen1', document.getElementById("imagenDelanteraInput").files[0]);
+    //     formData.append('imagen2', document.getElementById("imagenTraseraInput").files[0]);
+    //     //formData.append("tipo", document.getElementById("imagenDelanteraInput").getAttribute("tipo"));
+    //     fetch("{% url 'convertir_imagen' %}", {
+    //         method: "POST",
+    //         body: formData,
+    //     })
+    //         .then(response => response.json())
+    //         .then(data => {
+    //             document.getElementById("resultadoDiv").innerText = JSON.stringify(data);
+    //         })
+    //         .catch(error => console.error(error));
+    // };
+
+    document.getElementById("formImagen").onsubmit = function (event) {
+            event.preventDefault();
+            let formData = new FormData();
+            formData.append('image_bytes1', document.getElementById("imageBytesInput1").value);
+            formData.append('image_bytes2', document.getElementById("imageBytesInput2").value);
+
+            fetch("{% url 'convertir_imagen' %}", {
+                method: "POST",
+                body: formData,
+            })
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById("resultadoDiv").innerText = JSON.stringify(data);
+                })
+                .catch(error => console.error(error));
+        };
+
+</script>
+
