@@ -28,55 +28,55 @@ def recortarDatos(original, p1, p2):
 
 
 def cortarDatosNum_DNI(original):
-    p1 = (920, 70)
-    p2 =(1480 - 371, 155 - 40)
+    p1 = (882, 69)
+    p2 = (1480-371, 190-40)
     return recortarDatos(original, p1, p2)
 
 def cortarDatosApe_p(original):
-    p1 = (373, 120)
-    p2 = (990 - 371, 310 - 120)
+    p1 = (387, 129)
+    p2 = (940 - 371, 318 - 120)
     return recortarDatos(original, p1, p2)
 
 
 def cortarDatosApe_m(original):
-    p1 = (373, 190)
-    p2 = (990 - 371, 310 - 40)
+    p1 = (387, 198)
+    p2 = (945 - 371, 310 - 40)
     return recortarDatos(original, p1, p2)
 
 
 def cortarDatosPrenombre(original):
-    p1 = (373, 273)
-    p2 = (990 - 371, 385 - 40)
+    p1 = (387, 270)
+    p2 = (970 - 371, 381 - 40)
     return recortarDatos(original, p1, p2)
 
 
 def cortarDatosfech_nac(original):
-    p1 = (373, 350)
-    p2 = (880 - 371, 440 - 40)
+    p1 = (388, 340)
+    p2 = (881 - 371, 438 - 40)
     return recortarDatos(original, p1, p2)
 
 
 def cortarDatosDepartamento(original):
-    p1 = (143, 277)
-    p2 = (730 - 371, 376 - 40)
+    p1 = (175, 300)
+    p2 = (745 - 371, 401 - 40)
     return recortarDatos(original, p1, p2)
 
 
 def cortarDatosProvincia(original):
-    p1 = (363, 277)
-    p2 = (950 - 371, 376 - 40)
+    p1 = (373, 300)
+    p2 = (1000 - 371, 401 - 40)
     return recortarDatos(original, p1, p2)
 
 
 def cortarDatosDistrito(original):
-    p1 = (650, 277)
-    p2 = (1250 - 371, 376 - 40)
+    p1 = (650, 300)
+    p2 = (1220 - 371, 401 - 40)
     return recortarDatos(original, p1, p2)
 
 
 def cortarDatosDireccion(original):
-    p1 = (143, 340)
-    p2 = (970 - 371, 450 - 40)
+    p1 = (175, 354)
+    p2 = (970 - 371, 475 - 40)
     return recortarDatos(original, p1, p2)
 
 
@@ -203,7 +203,7 @@ def convertir_imagen_delantera(imagenConvert):
         try:
         #if request.method == 'POST' and request.FILES.get('imagen'):
 
-            pytesseract.pytesseract.tesseract_cmd = r'/usr/bin/tesseract'
+            pytesseract.pytesseract.tesseract_cmd = r'C:\Users\Usuario\AppData\Local\Programs\Tesseract-OCR\tesseract.exe'
 
             #imagen = request.FILES['imagen']
             #imagen_dni = cv2.imread(imagenConvert)
@@ -246,13 +246,11 @@ def convertir_imagen_delantera(imagenConvert):
                 #JSON_apePat = re.sub(pattern, '', apePat_clean)
             
             resultado_json = {
-                'datos_text_dni': {
                     "dniNum": dni_clean,
                     "apePat": apePat_clean,
                     "apeMat": apeMat_clean,
                     "nombres": nombres_clean,
                     "fechNac": fecNac_clean,
-                }
             }
 
             return resultado_json
@@ -268,8 +266,10 @@ def convertir_imagen_trasera(imagenConvert):
         try:
         #if request.method == 'POST' and request.FILES.get('imagen'):
         
-            pytesseract.pytesseract.tesseract_cmd = r'/usr/bin/tesseract'
+            pytesseract.pytesseract.tesseract_cmd = r'C:\Users\Usuario\AppData\Local\Programs\Tesseract-OCR\tesseract.exe'
 
+            #imagen = request.FILES['imagen']
+            #imagen_dni = cv2.imread(imagenConvert)
 
             imagen_dni = imagenConvert
             
@@ -301,13 +301,11 @@ def convertir_imagen_trasera(imagenConvert):
             direccion_clean = linea_direccion[1] if len(linea_direccion) >= 2 else datos_dni_direccion
             
             resultado_json = {
-                'datos_text_dni': {
                     "dep": departamento_clean,
                     "prov": provincia_clean,
                     "dist": distrito_clean,
                     "dir": direccion_clean,
                 }
-            }
 
             return resultado_json
 
@@ -317,53 +315,55 @@ def convertir_imagen_trasera(imagenConvert):
 @csrf_exempt
 def convertir_imagen_endpoint(request):
     try:
-        #if request.method == 'POST' and request.FILES.get('imagen1') and request.FILES.get('imagen2'):
+        if request.method == 'POST' and request.FILES.get('image_bytes1') and request.FILES.get('image_bytes2'):
 
-            #imagen1 = request.FILES['imagen1']
-            #tipo = request.POST.get('tipo')
-        if request.method == 'POST':
+            imagen1 = request.FILES['image_bytes1']
+            imagen2 = request.FILES['image_bytes2']
+
+        # if request.method == 'POST':
 
             
-            image_bytes1 = request.POST.get('image_bytes1')
-            if image_bytes1:
-                # Convertir la lista de bits en un arreglo de NumPy
-                image_bytes1 = [int(x) for x in image_bytes1.split(',')]
-                image_bytes1 = bytes(image_bytes1)
+        #     image_bytes1 = request.POST.get('image_bytes1')
+        #     if image_bytes1:
+        #         # Convertir la lista de bits en un arreglo de NumPy
+        #         image_bytes1 = [int(x) for x in image_bytes1.split(',')]
+        #         image_bytes1 = bytes(image_bytes1)
 
-                decoded_image1 = cv2.imdecode(np.frombuffer(image_bytes1, np.uint8), -1)   
+        #         decoded_image1 = cv2.imdecode(np.frombuffer(image_bytes1, np.uint8), -1)   
             
             
-            image_bytes2 = request.POST.get('image_bytes1')
-            if image_bytes2:
-                # Convertir la lista de bits en un arreglo de NumPy
-                image_bytes2 = [int(x) for x in image_bytes2.split(',')]
-                image_bytes2 = bytes(image_bytes2)
+        #     image_bytes2 = request.POST.get('image_bytes2')
+        #     if image_bytes2:
+        #         # Convertir la lista de bits en un arreglo de NumPy
+        #         image_bytes2 = [int(x) for x in image_bytes2.split(',')]
+        #         image_bytes2 = bytes(image_bytes2)
 
-                decoded_image2 = cv2.imdecode(np.frombuffer(image_bytes2, np.uint8), -1) 
+        #         decoded_image2 = cv2.imdecode(np.frombuffer(image_bytes2, np.uint8), -1) 
 
             # Leer la imagen utilizando OpenCV
-            #imagen1_cv2 = cv2.imdecode(np.fromstring(decoded_image1.read(), np.uint8), cv2.IMREAD_COLOR)
-            #imagen2_cv2 = cv2.imdecode(np.fromstring(decoded_image2.read(), np.uint8), cv2.IMREAD_COLOR)
-
+            imagen1_cv2 = cv2.imdecode(np.fromstring(imagen1.read(), np.uint8), cv2.IMREAD_COLOR)
+            imagen2_cv2 = cv2.imdecode(np.fromstring(imagen2.read(), np.uint8), cv2.IMREAD_COLOR)
             
 
-            resultadoImage1 = convertir_imagen_delantera(decoded_image1)
-            resultadoImage2 = convertir_imagen_trasera(decoded_image2)
-            
-            
+            resultadoImage1 = convertir_imagen_delantera(imagen1_cv2)
+            resultadoImage2 = convertir_imagen_trasera(imagen2_cv2)
+
+            resultado_concatenado = {}
+            resultado_concatenado.update(resultadoImage1)
+            resultado_concatenado.update(resultadoImage2)
+
             response_data = {
-                'success': 200,
+                'status': 200,
                 'message': 'Extracción de datos exitosa',
-                'datos_delantero_dni': resultadoImage1,
-                'datos_trasero_dni': resultadoImage2
+                'data': resultado_concatenado
             }
 
             return JsonResponse(response_data)
 
-        return JsonResponse({'success': 400, 'error': 'Se esperaba una imagen en el POST.'})
+        return JsonResponse({'status': 400, 'error': 'Se esperaba una imagen en el POST.'})
 
     except Exception as e:
-        return JsonResponse({'success': 404, 'error': str(e)})
+        return JsonResponse({'status': 404, 'error': str(e)})
 
 #_________________________________________________________________________________________________________________
 
